@@ -39,5 +39,24 @@ describe('ditaa', function() {
       done();
     });
   });
+  
+  it('handles a complex ditaa ascii graph', function(done) {
+    var graph = [
+      '+--------+   +-------+    +-------+',
+      '|        | --+ ditaa +--> |       |',
+      '|  Text  |   +-------+    |diagram|',
+      '|Document|   |!magic!|    |       |',
+      '|     {d}|   |       |    |       |',
+      '+---+----+   +-------+    +-------+',
+      '    :                         ^',
+      '    |       Lots of work      |',
+      '    +-------------------------+'
+    ].join('\n');
+    var complexPng = fs.readFileSync(path.join(__dirname, 'complex.png'));
+    ditaa(graph, function(err, data) {
+      expect(data.toString()).toBe(complexPng.toString());
+      done();
+    });
+  });
 
 });
