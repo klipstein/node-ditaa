@@ -1,0 +1,21 @@
+{
+  "name": "node-ditaa",
+  "version": "0.1.0",
+  "description": "Node API for ditaa",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine-node test"
+  },
+  "repository": "",
+  "keywords": [
+    "ditaa"
+  ],
+  "author": "Tobias von Klipstein",
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine-node": "~1.2.3"
+  },
+  "dependencies": {
+    "temporary": "~0.0.5"
+  }
+}
