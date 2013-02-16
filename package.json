@@ -1,12 +1,12 @@
 {
   "name": "node-ditaa",
   "version": "0.1.0",
-  "description": "Node API for ditaa",
+  "description": "Node API for DiTAA",
   "main": "index.js",
   "scripts": {
     "test": "jasmine-node test"
   },
-  "repository": "",
+  "repository": "git://github.com/klipstein/node-ditaa.git",
   "keywords": [
     "ditaa"
   ],

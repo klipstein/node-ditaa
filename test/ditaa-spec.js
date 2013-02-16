@@ -35,7 +35,7 @@ describe('ditaa', function() {
     ].join('\n');
     var simplePng = fs.readFileSync(path.join(__dirname, 'simple.png'));
     ditaa(graph, function(err, data) {
-      expect(data.toString()).toBe(simplePng.toString())
+      expect(data.toString()).toBe(simplePng.toString());
       done();
     });
   });
