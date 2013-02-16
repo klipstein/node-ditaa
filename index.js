@@ -3,10 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var TempFile = require('temporary/lib/file');
 
-module.exports = function(graphString, callback) {
-  var inFile = new TempFile();
-  var outFile = new TempFile();
-  inFile.writeFileSync(graphString);
+var execJar = function(inFile, outFile, callback) {
   var cmd = [
     'java',
     '-jar',
@@ -23,4 +20,13 @@ module.exports = function(graphString, callback) {
       outFile.unlink();
     }
   });
+};
+
+module.exports = function(graphString, callback) {
+  var inFile = new TempFile();
+  var outFile = new TempFile();
+  inFile.writeFileSync(graphString);
+
+  var execNodeJava = require('./node_java.js');
+  execNodeJava(inFile, outFile, callback);
 };
