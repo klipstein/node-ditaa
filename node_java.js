@@ -25,6 +25,7 @@ var nullPrintStream = new PrintStream(new FileOutputStream(nullString));
 
 module.exports = function(inFile, outFile, callback) {
 
+  var diagram;
   var grid = new TextGrid();
   var options = new Options();
   var cmdLineParser = new BasicParser();
@@ -32,19 +33,20 @@ module.exports = function(inFile, outFile, callback) {
   var cmdLine = cmdLineParser.parseSync(options, stringArray);
   var conversionOptions = new ConversionOptions(cmdLine);
   var inFileString = java.newInstanceSync("java.lang.String", inFile.path);
+  var outFileStream = new FileOutputStream(outFile.path);
 
-  System.setOutSync(nullPrintStream);
-
-  try {
-    grid.loadFromSync(inFileString, conversionOptions.processingOptions);
-    var diagram = new Diagram(grid, conversionOptions);   
-    var image = new BitmapRenderer().renderToImageSync(diagram, conversionOptions.renderingOptions);
-    var os = new FileOutputStream(outFile.path);
-    ImageIO.writeSync(image, 'png', os);
-    fs.readFile(outFile.path, callback);
-  } catch(err) {
-    callback(err);
-  }
+  grid.loadFrom(inFileString, conversionOptions.processingOptions, function(err) {
+    if (err) return callback(err);
+    System.setOutSync(nullPrintStream); // avoid System.out.println to print to console
+    diagram = new Diagram(grid, conversionOptions);
+    System.setOutSync(originalPrintStream); // reset to previous original stream
+    new BitmapRenderer().renderToImage(diagram, conversionOptions.renderingOptions, function(err, image) {
+      if (err) return callback(err);
+      ImageIO.write(image, 'png', outFileStream, function(err) {
+        if (err) return callback(err);
+        fs.readFile(outFile.path, callback);
+      });
+    });
+  });
   
-  System.setOutSync(originalPrintStream);
 };
