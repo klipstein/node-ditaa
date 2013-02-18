@@ -26,18 +26,18 @@ var nullPrintStream = new PrintStream(new FileOutputStream(nullString));
 var setConversionOptions = function(conversionOptions, options) {
   var pOptions = conversionOptions.processingOptions;
   var rOptions = conversionOptions.renderingOptions;
-  pOptions.setAllCornersAreRound(options.roundedCorners);
-  pOptions.setCharacterEncoding(
+  pOptions.setAllCornersAreRoundSync(options.roundedCorners);
+  pOptions.setCharacterEncodingSync(
     java.newInstanceSync("java.lang.String", options.encoding)
   );
-  pOptions.setPerformSeparationOfCommonEdges(options.separationOfCommonEdges);
-  pOptions.setTabSize(options.tabSize);
+  pOptions.setPerformSeparationOfCommonEdgesSync(options.separationOfCommonEdges);
+  pOptions.setTabSizeSync(options.tabSize);
   
-  rOptions.setRenderDebugLines(options.debug);
+  rOptions.setRenderDebugLinesSync(options.debug);
 
   rOptions.setDropShadowsSync(options.dropShadows);
-  rOptions.setAntialias(options.antialias);
-  rOptions.setScale(options.scale);
+  rOptions.setAntialiasSync(options.antialias);
+  rOptions.setScaleSync(options.scale);
 };
 
 module.exports = function(inFile, outFile, options, callback) {
