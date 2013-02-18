@@ -23,15 +23,35 @@ var nullString = java.newInstanceSync('java.lang.String', (isWindows ? 'NUL:' : 
 var originalPrintStream = new PrintStream(System.out);
 var nullPrintStream = new PrintStream(new FileOutputStream(nullString));
 
-module.exports = function(inFile, outFile, callback) {
+var setConversionOptions = function(conversionOptions, options) {
+  var pOptions = conversionOptions.processingOptions;
+  var rOptions = conversionOptions.renderingOptions;
+  pOptions.setAllCornersAreRound(options.roundedCorners);
+  pOptions.setCharacterEncoding(
+    java.newInstanceSync("java.lang.String", options.encoding)
+  );
+  pOptions.setPerformSeparationOfCommonEdges(options.separationOfCommonEdges);
+  pOptions.setTabSize(options.tabSize);
+  
+  rOptions.setRenderDebugLines(options.debug);
+
+  rOptions.setDropShadowsSync(options.dropShadows);
+  rOptions.setAntialias(options.antialias);
+  rOptions.setScale(options.scale);
+};
+
+module.exports = function(inFile, outFile, options, callback) {
 
   var diagram;
   var grid = new TextGrid();
-  var options = new Options();
+  var cmdLineOptions = new Options();
   var cmdLineParser = new BasicParser();
   var stringArray = java.newArray('java.lang.String', []);
-  var cmdLine = cmdLineParser.parseSync(options, stringArray);
+  var cmdLine = cmdLineParser.parseSync(cmdLineOptions, stringArray);
   var conversionOptions = new ConversionOptions(cmdLine);
+
+  setConversionOptions(conversionOptions, options);
+
   var inFileString = java.newInstanceSync("java.lang.String", inFile.path);
   var outFileStream = new FileOutputStream(outFile.path);
 
@@ -48,5 +68,14 @@ module.exports = function(inFile, outFile, callback) {
       });
     });
   });
-  
+
+};
+
+module.exports.prepareOptions = function(options, defaultOptions) {
+  options = options ? options : {};
+  var ret = {};
+  for (var key in defaultOptions) {
+    ret[key] = typeof options[key] !== 'undefined' ? options[key] : defaultOptions[key][1]
+  }
+  return ret;
 };
