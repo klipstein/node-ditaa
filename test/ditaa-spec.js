@@ -60,26 +60,40 @@ describe('ditaa', function() {
       done();
     });
   });
- 
+
+  var simpleOptionsGraph = [
+    '\t+-----+',
+    '\t|     |',
+    '\t+-----+'
+  ].join('\n');
+  var simpleOptions = {
+    antialias: false,
+    dropShadows: false,
+    debug: true,
+    encoding: 'utf-8',
+    roundedCorners: true,
+    scale: 5,
+    separationOfCommonEdges: false,
+    tabSize: 8
+  };
+
   it('allows to pass ditaa options as second parameter', function(done) {
-    var graph = [
-      '\t+-----+',
-      '\t|     |',
-      '\t+-----+'
-    ].join('\n');
     var simplePngWithOptions = fs.readFileSync(path.join(__dirname, 'simple_options.png'));
-    ditaa(graph, {
-      antialias: false,
-      dropShadows: false,
-      debug: true,
-      encoding: 'utf-8',
-      roundedCorners: true,
-      scale: 5,
-      separationOfCommonEdges: false,
-      tabSize: 8
-    }, function(err, data) {
+    ditaa(simpleOptionsGraph, simpleOptions, function(err, data) {
       expect(data.toString()).toBe(simplePngWithOptions.toString());
       done();
+    });
+  });
+
+  describe('ditaa#enableJavaExec', function() {
+    it('enables executing ditaa via commandline (slow)', function(done) {
+      ditaa.enableJavaExec();
+      var simplePngWithOptions = fs.readFileSync(path.join(__dirname, 'simple_options.png'));
+      ditaa(simpleOptionsGraph, simpleOptions, function(err, data) {
+        expect(data.toString()).toBe(simplePngWithOptions.toString());
+        ditaa.disableJavaExec();
+        done();
+      });
     });
   });
 
