@@ -2,9 +2,9 @@ var exec = require('child_process').exec;
 var fs = require('fs');
 var path = require('path');
 
-module.exports = function(inFile, outFile, options, callback) {
+module.exports = function(inFile, outFile, options, javaExecutable, callback) {
   var cmd = [
-    'java',
+    javaExecutable,
     '-jar',
     path.join(__dirname, 'vendor', 'ditaa-0.9', 'ditaa.jar'),
     inFile.path,

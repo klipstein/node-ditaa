@@ -13,7 +13,7 @@ module.exports = function(graphString, options, callback) {
 
   if (useJavaExec) {
     options = execJar.prepareOptions(options, defaultOptions);
-    execJar(inFile, outFile, options, callback);
+    execJar(inFile, outFile, options, javaExecutable, callback);
   } else {
     options = execNodeJava.prepareOptions(options, defaultOptions);
     execNodeJava(inFile, outFile, options, callback);

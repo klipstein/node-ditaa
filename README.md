@@ -1,10 +1,10 @@
 # node-ditaa
 
-Node.js API for [DiTAA](http://ditaa.sourceforge.net/).
+Node.js API for [DiTAA](http://ditaa.sourceforge.net/). You can use [ASCIIFLOW](http://www.asciiflow.com) to draw your DiTAA diagrams.
 
 ## Prerequisites
 
-Requires Java to be installed and available as `java` on your `PATH`.
+Requires Java to be installed. Uses node-module [java](https://github.com/nearinfinity/node-java) as default to execute DiTAA.
 
 ## Installation
 
@@ -31,6 +31,37 @@ ditaa(asciiGraph, function(err, img) {
     fs.writeFileSync('graph.png', img);
   }
 });
+~~~
+
+Options for `node-ditaa` can optionally be passed as second parameter (values are the default values):
+
+~~~js
+ditaa(asciiGraph, {
+  antialias: true,
+  dropShadows: true,
+  debug: false,
+  encoding: 'utf-8',
+  roundedCorners: false,
+  scale: 1,
+  separationOfCommonEdges: true,
+  tabSize: 0
+}, function(err, img) {
+  if (err) {
+    console.log(err);
+  } else {
+    fs.writeFileSync('graph.png', img);
+  }
+});
+~~~
+
+If the node-module [java](https://github.com/nearinfinity/node-java) does not work, you can fallback to normal
+java command line execution (which is much slower):
+
+~~~js
+ditaa.enableJavaExec();
+// optionally set the java executable path
+ditaa.enableJavaExec('/path/to/java');
+// ditaa.disableJavaExec();
 ~~~
 
 ## License
