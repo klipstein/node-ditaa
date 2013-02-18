@@ -54,7 +54,7 @@ ditaa(asciiGraph, {
 });
 ~~~
 
-If the node-module [java](https://github.com/nearinfinity/node-java) does not work, you can fallback to normal
+If the node-module [java](https://github.com/nearinfinity/node-java) does not work, you can fall back to normal
 java command line execution (which is much slower):
 
 ~~~js
